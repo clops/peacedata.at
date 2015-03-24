@@ -12,6 +12,7 @@
     /** @var Silex\Application $app * */
     $app->get('/', 'Clops\Controller\PageController::indexAction');
     $app->get('/index.html', 'Clops\Controller\PageController::indexAction');
+    $app->get('/grow/add/', 'Clops\Controller\GrowController::addAction');
 
     ## Error Handlers ##############################################################
     #
