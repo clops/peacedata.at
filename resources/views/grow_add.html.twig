@@ -12,18 +12,19 @@
             autoclose: true,
             orientation: "bottom left",
             todayHighlight: true,
-            todayBtn: true
+            todayBtn: "linked"
         });
     });
 </script>
 {% endblock %}
 
 {% block content %}
-    <form>
+    <form method="post">
         <div class="form-group">
             <label for="inputName">Name</label>
             <input type="name" class="form-control" id="inputName" value="YAG {{ "now"|date('Y') }}" placeholder="Give your grow a reasonable name">
         </div>
+
         <div class="form-group">
             <label for="exampleInputFile">Number of Plants</label>
             <select class="form-control">
@@ -39,13 +40,15 @@
                 <option>10</option>
             </select>
         </div>
+
         <div class="form-group">
             <label for="inputStartDate">Start Date</label>
-            <div class="input-group col-xs-2">
+            <div class="input-group" style="width: 150px;">
                 <input type="text" class="form-control" id="inputStartDate" value="{{ "now"|date('Y-m-d') }}">
                 <span class="input-group-addon"><span class="glyphicon glyphicon-th" aria-hidden="true"></span></span>
             </div>
         </div>
+
         <button type="submit" class="btn btn-success">Create Grow!</button> or <a href="/">cancel</a>
     </form>
 {% endblock %}
