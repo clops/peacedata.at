@@ -31,13 +31,13 @@ CREATE TABLE grow_status(
   KEY(name)
 ) Engine=InnoDB;
 
-INSERT INTO grow_status(name, created) VALUES('planning', NOW()),('planted',NOW()),('vegetation',NOW()),('flowering',NOW()),('checking',NOW()),('done',NOW()),('canceled',NOW());
+INSERT INTO grow_status(status_id, name, created) VALUES(1, 'planning', NOW()),(2, 'planted',NOW()),(3, 'vegetation',NOW()),(4, 'flowering',NOW()),(5, 'checking',NOW()),(6, 'done',NOW()),(7, 'canceled',NOW());
 
 CREATE TABLE grow(
   grow_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   company_id INT UNSIGNED NOT NULL,
   user_id INT UNSIGNED NOT NULL,
-  status_id INT UNSIGNED DEFAULT NULL,
+  status_id INT UNSIGNED DEFAULT 1,
 
   created DATETIME NOT NULL,
   modified TIMESTAMP,
