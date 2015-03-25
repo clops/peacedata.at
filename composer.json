@@ -28,7 +28,9 @@
 
         "leafo/lessphp"         : "~0.4.0",
         "kriswallsmith/assetic" : "~1.1",
-        "mheap/silex-assetic"   : "~1.0"
+        "mheap/silex-assetic"   : "~1.0",
+
+        "deralex/yaml-config-service-provider": "1.0.x-dev"
     },
 
     "scripts": {

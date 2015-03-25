@@ -5,20 +5,23 @@
      * This is the main configuration dispatcher for the whole site
      */
 
-    use Silex\Provider\HttpCacheServiceProvider;
+	use Silex\Application;
+	use Silex\Provider\HttpCacheServiceProvider;
     use Silex\Provider\MonologServiceProvider;
     use Silex\Provider\TwigServiceProvider;
 	use Silex\Provider\DoctrineServiceProvider;
     use SilexAssetic\AsseticServiceProvider;
+	use Symfony\Component\HttpFoundation\Request;
+	use Symfony\Component\HttpFoundation\Response;
 
     ####### SETUP ########################################################################################
     #
 	define("ROOT_PATH", __DIR__ . "/.."); //short reference forever
 
 	# CONFIG FILES -->
-	#if(file_exists(__DIR__ . '/../resources/config/settings.yml')){ //important!!! composer.phar will create the file on install
-	#	$app->register(new DerAlex\Silex\YamlConfigServiceProvider(__DIR__ . '/../resources/config/settings.yml'));
-	#}
+	if(file_exists(__DIR__ . '/../resources/config/settings.yml')){ //important!!! composer.phar will create the file on install
+		$app->register(new DerAlex\Silex\YamlConfigServiceProvider(__DIR__ . '/../resources/config/settings.yml'));
+	}
 
     # TWIG -->
     /** @var Silex\Application $app * */
@@ -44,10 +47,10 @@
 	$app->register(new DoctrineServiceProvider(), array(
 		'db.options' => array(
 			'driver'   => 'pdo_mysql',
-			'host'     => 'localhost',
-			'dbname'   => 'my_database',
-			'user'     => 'my_username',
-			'password' => 'my_password',
+			'host'     => $app['config']['db']['host'],
+			'dbname'   => $app['config']['db']['database'],
+			'user'     => $app['config']['db']['user'],
+			'password' => $app['config']['db']['pass'],
 			'charset'  => 'utf8'
 		),
 	));
@@ -91,5 +94,24 @@
         );
 
     }
+
+	## Some Default Headers ###
+	//handling CORS preflight request
+	$app->before(function (Request $request) {
+		if ($request->getMethod() === "OPTIONS") {
+			$response = new Response();
+			$response->headers->set("Access-Control-Allow-Origin","*");
+			$response->headers->set("Access-Control-Allow-Methods","GET,POST,OPTIONS");
+			$response->headers->set("Access-Control-Allow-Headers","Content-Type");
+			$response->setStatusCode(200);
+			return $response->send();
+		}
+	}, Application::EARLY_EVENT);
+
+	//handling CORS respons with right headers
+	$app->after(function (Request $request, Response $response) {
+		$response->headers->set("Access-Control-Allow-Origin","*");
+		$response->headers->set("Access-Control-Allow-Methods","GET,POST,OPTIONS");
+	});
 
     return $app;
