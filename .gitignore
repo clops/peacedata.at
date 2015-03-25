@@ -8,3 +8,4 @@ resources/cache/assetic/
 resources/log/*
 web/assets/css/
 web/assets/js/
+resources/config/settings.yml

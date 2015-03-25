@@ -8,10 +8,18 @@
     use Silex\Provider\HttpCacheServiceProvider;
     use Silex\Provider\MonologServiceProvider;
     use Silex\Provider\TwigServiceProvider;
+	use Silex\Provider\DoctrineServiceProvider;
     use SilexAssetic\AsseticServiceProvider;
 
     ####### SETUP ########################################################################################
     #
+	define("ROOT_PATH", __DIR__ . "/.."); //short reference forever
+
+	# CONFIG FILES -->
+	#if(file_exists(__DIR__ . '/../resources/config/settings.yml')){ //important!!! composer.phar will create the file on install
+	#	$app->register(new DerAlex\Silex\YamlConfigServiceProvider(__DIR__ . '/../resources/config/settings.yml'));
+	#}
+
     # TWIG -->
     /** @var Silex\Application $app * */
     $app->register(new TwigServiceProvider(), array(
@@ -31,6 +39,18 @@
         'monolog.name'    => 'app',
         'monolog.level'   => 300 // = Logger::WARNING
     ));
+
+	# DOCTRINE -->
+	$app->register(new DoctrineServiceProvider(), array(
+		'db.options' => array(
+			'driver'   => 'pdo_mysql',
+			'host'     => 'localhost',
+			'dbname'   => 'my_database',
+			'user'     => 'my_username',
+			'password' => 'my_password',
+			'charset'  => 'utf8'
+		),
+	));
 
     # ASSETIC (from https://github.com/lyrixx/Silex-Kitchen-Edition/blob/master/src/app.php ) -->
     if (isset($app['assetic.enabled']) && $app['assetic.enabled']) {
