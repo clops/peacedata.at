@@ -39,6 +39,8 @@ CREATE TABLE grow(
   user_id INT UNSIGNED NOT NULL,
   status_id INT UNSIGNED DEFAULT 1,
 
+  name VARCHAR(100) NOT NULL,
+  medium ENUM('hydro','coco','soil','other') NOT NULL,
   created DATETIME NOT NULL,
   modified TIMESTAMP,
 

@@ -23,9 +23,15 @@ class GrowController
      *
      * @return mixed
      */
-    public function addAction(Request $request, Application $app)
+    public function prepareAddAction(Request $request, Application $app)
     {
         return $app['twig']->render('grow_add.html.twig', array());
     }
+
+	public function addAction(Request $request, Application $app)
+	{
+		print_r($_POST);
+		echo 111;exit;
+	}
 
 }
