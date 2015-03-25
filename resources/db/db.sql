@@ -7,6 +7,7 @@ CREATE TABLE companies(
   PRIMARY KEY (company_id)
 ) Engine=InnoDB;
 
+INSERT INTO companies(company_id, name, created) VALUES(1, 'ACME', NOW());
 
 CREATE TABLE users(
   user_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -19,6 +20,8 @@ CREATE TABLE users(
   PRIMARY KEY (user_id),
   FOREIGN KEY (company_id) REFERENCES companies(company_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) Engine=InnoDB;
+
+INSERT INTO users(user_id,company_id,email,password,created) VALUES(1,1,'me@peacedata.at','admin',NOW());
 
 CREATE TABLE grow_status(
   status_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -41,11 +44,12 @@ CREATE TABLE grow(
 
   name VARCHAR(100) NOT NULL,
   medium ENUM('hydro','coco','soil','other') NOT NULL,
+  start DATE NOT NULL,
+
   created DATETIME NOT NULL,
   modified TIMESTAMP,
 
   PRIMARY KEY (grow_id),
-  KEY(status),
   FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (company_id) REFERENCES companies(company_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (status_id) REFERENCES grow_status(status_id) ON DELETE SET NULL ON UPDATE CASCADE
