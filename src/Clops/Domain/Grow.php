@@ -16,6 +16,17 @@ class Grow extends Generic{
 	protected $start;
 	protected $plants = Array();
 
+	/* DB Reference */
+	const TABLE = 'grow';
+
+
+	/**
+	 * @param $id
+	 */
+	public function init($id){
+		//load data from database
+
+	}
 
 	/**
 	 * @return mixed
@@ -66,7 +77,7 @@ class Grow extends Generic{
 
 
 	public function create() {
-		$this->app['db']->insert('grow', array(
+		$this->app['db']->insert(self::TABLE, array(
 			'name'    => $this->getName(), //this is the primary key, sending the same commit over WILL result in an exception :)
 			'medium'  => $this->getMedium(),
 			'start'   => $this->getStart(),
