@@ -38,9 +38,10 @@ class GrowController
 	{
 		$grow = new Grow( $app );
 		$grow->setCreated('now');
-		$grow->setName( $request->get('name', 'n/a') );
+		$grow->setName(   $request->get('name', 'n/a') );
 		$grow->setMedium( $request->get('medium', 'hydro') );
-		$grow->setStart( $request->get('start', date('Y-m-d')) );
+		$grow->setStart(  $request->get('start', date('Y-m-d')) );
+		$grow->addPlants( $request->get('plants', 1) );
 		$grow->save();
 
 		echo 'Created Grow with ID '.$grow->getID();

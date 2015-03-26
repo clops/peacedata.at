@@ -14,18 +14,28 @@ class Grow extends Generic{
 	protected $name;
 	protected $medium;
 	protected $start;
-	protected $plants = Array();
+
+	/**
+	 * @var PlantCollection $plants
+	 */
+	protected $plants;
 
 	/* DB Reference */
 	const TABLE = 'grow';
 
 
 	/**
+	 * Magic Method always called after init
+	 */
+	protected function afterInit(){
+		$this->initPlantsCollection();
+	}
+
+	/**
 	 * @param $id
 	 */
 	public function init($id){
 		//load data from database
-
 	}
 
 	/**
@@ -76,7 +86,59 @@ class Grow extends Generic{
 	}
 
 
+	/**
+	 * @return PlantCollection
+	 */
+	public function getPlants() {
+		return $this->plants;
+	}
+
+
+	/**
+	 * @param PlantCollection $plants
+	 */
+	public function setPlants( PlantCollection $plants ) {
+		$this->plants = $plants;
+	}
+
+
+
+	/**
+	 * @param $number
+	 */
+	public function addPlants( $number ) {
+		$number = (int)$number;
+		if($number < 0) {
+			$number = 0;
+		}
+
+		$counter = 1;
+		while($counter <= $number) {
+			$plant = new Plant( $this->app );
+			$plant->setGrow( $this );
+			$plant->setName( 'Plant '.$counter );
+			$plant->setCreated('now');
+
+			$this->plants->add($plant);
+			$counter++;
+		}
+	}
+
+	/**
+	 * Makes sure that plants is a PlantCollection
+	 */
+	protected function initPlantsCollection() {
+		if(!$this->plants instanceof PlantCollection){
+			$this->plants = new PlantCollection();
+		}
+	}
+
+
+	/**
+	 * @2do Implement company and user injections
+	 */
 	public function create() {
+		//save grow
 		$this->app['db']->insert(self::TABLE, array(
 			'name'    => $this->getName(), //this is the primary key, sending the same commit over WILL result in an exception :)
 			'medium'  => $this->getMedium(),
@@ -87,6 +149,11 @@ class Grow extends Generic{
 		));
 
 		$this->setID( $this->app['db']->lastInsertId() );
+
+		//save all plants in the grow
+		foreach($this->getPlants() as $plant){
+			$plant->create();
+		}
 	}
 
 	public function update() {

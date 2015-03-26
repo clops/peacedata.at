@@ -29,9 +29,19 @@ abstract class Generic {
 	public function __construct( Application $app, $id = null ){
 		$this->app = $app;
 
+		$this->beforeInit();
 		if(isset($id)){
 			$this->init($id);
 		}
+		$this->afterInit();
+	}
+
+	protected function beforeInit(){
+
+	}
+
+	protected function afterInit(){
+
 	}
 
 
