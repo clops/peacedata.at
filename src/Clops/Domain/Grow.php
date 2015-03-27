@@ -26,9 +26,24 @@ class Grow extends Generic{
 
 	/**
 	 * @param $id
+	 * @2do     add company_id and user_id access check
+	 * @return bool
 	 */
 	public function init($id){
 		//load data from database
+		if( $data = $this->db->fetchAssoc( "SELECT * FROM ".self::TABLE." WHERE grow_id = ?", array($this->getID())) ){
+			$this->setName( $data['name'] );
+			$this->setStart( $data['start'] );
+			$this->setMedium( $data['medium'] );
+			$this->initPlants();
+			return true;
+		}
+		return false;
+	}
+
+	protected function initPlants(){
+		$this->initPlantsCollection();
+		$this->getPlants()->initByGrow( $this );
 	}
 
 	/**
@@ -129,7 +144,7 @@ class Grow extends Generic{
 	 */
 	protected function initPlantsCollection() {
 		if(!$this->plants instanceof PlantCollection){
-			$this->plants = new PlantCollection();
+			$this->plants = new PlantCollection( $this->app );
 		}
 	}
 

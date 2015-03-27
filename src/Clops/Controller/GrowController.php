@@ -26,7 +26,7 @@ class GrowController
      */
     public function prepareAddAction(Request $request, Application $app)
     {
-        return $app['twig']->render('grow_add.html.twig', array());
+        return $app['twig']->render('grow/add.html.twig', array());
     }
 
 
@@ -44,8 +44,19 @@ class GrowController
 		$grow->addPlants( $request->get('plants', 1) );
 		$grow->save();
 
-		echo 'Created Grow with ID '.$grow->getID();
-		exit;
+		return $app->redirect('/grow/'.$grow->getID().'/');
 	}
 
+
+	/**
+	 * @param Request     $request
+	 * @param Application $app
+	 *
+	 * @return mixed
+	 */
+	public function showAction(Request $request, Application $app, $id)
+	{
+		$grow = new Grow( $app, $id );
+		return $app['twig']->render('grow/show.html.twig', array());
+	}
 }

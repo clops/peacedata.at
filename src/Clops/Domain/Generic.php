@@ -12,7 +12,16 @@ use Silex\Application;
 
 abstract class Generic {
 
+	/**
+	 * @var Application $app
+	 */
 	protected $app;
+
+	/**
+	 * @var \Doctrine\DBAL\Connection $db
+	 */
+	protected $db;
+
 	protected $id;
 	protected $created;
 	protected $modified;
@@ -28,9 +37,11 @@ abstract class Generic {
 	 */
 	public function __construct( Application $app, $id = null ){
 		$this->app = $app;
+		$this->db  = $this->app['db'];
 
 		$this->beforeInit();
 		if(isset($id)){
+			$this->setID($id);
 			$this->init($id);
 		}
 		$this->afterInit();

@@ -8,8 +8,19 @@
 
 namespace Clops\Domain;
 
+use Silex\Application;
 
 class GenericCollection implements \ArrayAccess, \IteratorAggregate, \Countable{
+
+	/**
+	 * @var Application $app
+	 */
+	protected $app;
+
+	/**
+	 * @var \Doctrine\DBAL\Connection $db
+	 */
+	protected $db;
 
 	/**
 	 * container for all collection
@@ -19,6 +30,11 @@ class GenericCollection implements \ArrayAccess, \IteratorAggregate, \Countable{
 	 */
 	protected $elements = array();
 
+
+	public function __construct( Application $app ){
+		$this->app = $app;
+		$this->db  = $this->app['db'];
+	}
 
 	/**
 	 * does a particular key exists among the elements
