@@ -25,17 +25,17 @@ class Grow extends Generic{
 
 
 	/**
-	 * Magic Method always called after init
-	 */
-	protected function afterInit(){
-		$this->initPlantsCollection();
-	}
-
-	/**
 	 * @param $id
 	 */
 	public function init($id){
 		//load data from database
+	}
+
+	/**
+	 * Magic Method always called after init
+	 */
+	protected function afterInit(){
+		$this->initPlantsCollection();
 	}
 
 	/**
