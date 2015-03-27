@@ -1,21 +1,7 @@
 {% extends "layout.html.twig" %}
 
 {% block header %}
-    Grow
-{% endblock %}
-
-{% block javascripts %}
-    <script language="JavaScript">
-        $(document).ready(function() {
-            $('#inputStartDate').datepicker({
-                format: 'yyyy-mm-dd',
-                autoclose: true,
-                orientation: "bottom left",
-                todayHighlight: true,
-                todayBtn: "linked"
-            });
-        });
-    </script>
+    Grow &laquo;{{ grow.getName() }}&raquo;
 {% endblock %}
 
 {% block content %}

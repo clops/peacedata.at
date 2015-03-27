@@ -57,6 +57,8 @@ class GrowController
 	public function showAction(Request $request, Application $app, $id)
 	{
 		$grow = new Grow( $app, $id );
-		return $app['twig']->render('grow/show.html.twig', array());
+		return $app['twig']->render('grow/show.html.twig', array(
+			'grow' => $grow
+		));
 	}
 }
