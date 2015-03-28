@@ -1,46 +1,12 @@
 {% extends "layout.html.twig" %}
 
 {% block header %}
-    Grow &laquo;{{ grow.getName() }}&raquo;
+    My Grow
 {% endblock %}
 
+
 {% block content %}
-
-    <p>
-        Name your plants and indicate their current height. Leave 0 in case your plants are still seeds :)
-    </p>
-    <form method="post" action="/grow/{{ grow.getID() }}/">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        #
-                    </th>
-                    <th>
-                        Name
-                    </th>
-                    <th>
-                        Height (cm)
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for plant in grow.getPlants() %}
-                <tr>
-                    <th scope="row" class="col-xs-1">
-                        {{ loop.index }}.
-                    </th>
-                    <td>
-                        <input type="text" class="form-control" name="name[{{ plant.getID() }}]" value="{{ plant.getName() }}" placeholder="Plant {{ loop.index }}">
-                    </td>
-                    <td class="col-xs-2">
-                        <input type="text" class="form-control" name="height[{{ plant.getID() }}]" value="{{ plant.getHeight() }}" placeholder="0">
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-
-        <button type="submit" class="btn btn-success">Update Plants!</button> or <a href="/">cancel</a>
-    </form>
+    Show grow data + plants here<br />
+    List critical data<br />
+    Next todo
 {% endblock %}

@@ -45,7 +45,7 @@ class GrowController
 		$grow->addPlants( $request->get('plants', 1) );
 		$grow->save();
 
-		return $app->redirect('/grow/'.$grow->getID().'/');
+		return $app->redirect('/grow/'.$grow->getID().'/plants/');
 	}
 
 
@@ -68,12 +68,28 @@ class GrowController
 	 * @param Request     $request
 	 * @param Application $app
 	 *
-	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
+	 * @return mixed
 	 */
-	public function updateAction(Request $request, Application $app, $id)
+	public function showPlantsAction(Request $request, Application $app, $id)
 	{
 		$grow = new Grow( $app, $id );
-		$postedNames = $request->get('name');
+		return $app['twig']->render('grow/updatePlants.html.twig', array(
+			'grow' => $grow
+		));
+	}
+
+
+	/**
+	 * @param Request     $request
+	 * @param Application $app
+	 *
+	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
+	 */
+	public function updatePlantsAction(Request $request, Application $app, $id)
+	{
+		$grow           = new Grow( $app, $id );
+		$postedNames    = $request->get('name');
+		$postedHeights  = $request->get('height');
 
 		/**
 		 * @var Plant $plant
@@ -83,9 +99,13 @@ class GrowController
 				$plant->setName( $postedNames[$plant->getID()] );
 			}
 
+			if(isset($postedHeights[$plant->getID()])){
+				$plant->setHeight( $postedHeights[$plant->getID()] );
+			}
+
 			$plant->update();
 		}
 
-		return $app->redirect('/grow/'.$grow->getID().'/?confirm=1');
+		return $app->redirect('/grow/'.$grow->getID().'/');
 	}
 }

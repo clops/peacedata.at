@@ -15,7 +15,8 @@
     $app->get('/grow/add/', 'Clops\Controller\GrowController::prepareAddAction');
 	$app->post('/grow/add/', 'Clops\Controller\GrowController::addAction');
 	$app->get('/grow/{id}/', 'Clops\Controller\GrowController::showAction')->assert('id', '\d+');
-	$app->post('/grow/{id}/', 'Clops\Controller\GrowController::updateAction')->assert('id', '\d+');
+	$app->get('/grow/{id}/plants/', 'Clops\Controller\GrowController::showPlantsAction')->assert('id', '\d+');
+	$app->post('/grow/{id}/plants/', 'Clops\Controller\GrowController::updatePlantsAction')->assert('id', '\d+');
 
     ## Error Handlers ##############################################################
     #

@@ -37,7 +37,7 @@ class Plant extends Generic{
 	public function initFromRowData(Array $data) {
 		$this->setID( $data['plant_id'] );
 		$this->setName( $data['name'] );
-		$this->setHeight( $data['height'] );
+		$this->setHeight( $data['height'], false );
 	}
 
 
@@ -84,8 +84,24 @@ class Plant extends Generic{
 	/**
 	 * @param mixed $height
 	 */
-	public function setHeight ($height) {
+	public function setHeight ( $height, $trackHistory=true ) {
+		if($this->height && $height != $this->height && $trackHistory){
+			$this->createHistorySnapshot();
+		}
 		$this->height = (int)$height;
+	}
+
+
+	/**
+	 * Take a not of the older plant height for future reference
+	 */
+	protected function createHistorySnapshot() {
+		//save grow
+		$this->db->insert('plant_history', array(
+			'plant_id' => $this->getID(),
+			'height'   => $this->getHeight(),
+			'created'  => $this->castToDate('now')
+		));
 	}
 
 
@@ -109,7 +125,8 @@ class Plant extends Generic{
 	 */
 	public function update() {
 		return $this->db->update(self::TABLE, array(
-													'name'    => $this->getName()
+													'name'     => $this->getName(),
+		                                            'height'   => $this->getHeight()
 												), array(
 													'plant_id' => $this->getID(),
 												    'grow_id'  => $this->getGrow()->getID()
