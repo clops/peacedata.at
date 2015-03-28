@@ -5,7 +5,7 @@ composer.phar
 vendor
 resources/cache/twig/
 resources/cache/assetic/
-#resources/log/
+resources/log/app.log
 web/assets/css/
 web/assets/js/
 resources/config/settings.yml
