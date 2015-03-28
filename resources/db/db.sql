@@ -69,14 +69,14 @@ CREATE TABLE plant(
   grow_id INT UNSIGNED NOT NULL,
 
   name VARCHAR(100) NOT NULL,
+  height INT UNSIGNED NOT NULL DEFAULT 0,
   type_id INT UNSIGNED DEFAULT NULL,
-
   status_id INT UNSIGNED DEFAULT 1,
 
-  planted_on DATETIME DEFAULT NULL,
-  vegetation_on DATETIME DEFAULT NULL,
-  flowering_on DATETIME DEFAULT NULL,
-  chop_chop_on DATETIME DEFAULT NULL,
+  planted_on DATE DEFAULT NULL,
+  vegetation_on DATE DEFAULT NULL,
+  flowering_on DATE DEFAULT NULL,
+  chop_chop_on DATE DEFAULT NULL,
 
   created DATETIME NOT NULL,
   modified TIMESTAMP,
@@ -85,4 +85,16 @@ CREATE TABLE plant(
   FOREIGN KEY (grow_id) REFERENCES grow(grow_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (type_id) REFERENCES plant_types(type_id) ON DELETE SET NULL ON UPDATE CASCADE,
   FOREIGN KEY (status_id) REFERENCES grow_status(status_id) ON DELETE SET NULL ON UPDATE CASCADE
+) Engine=InnoDB;
+
+CREATE TABLE plant_history(
+  history_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  plant_id INT UNSIGNED NOT NULL,
+
+  height INT UNSIGNED NOT NULL,
+
+  created DATETIME NOT NULL,
+
+  PRIMARY KEY (history_id),
+  FOREIGN KEY (plant_id) REFERENCES plant(plant_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) Engine=InnoDB;

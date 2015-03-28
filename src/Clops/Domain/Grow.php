@@ -32,15 +32,25 @@ class Grow extends Generic{
 	public function init($id){
 		//load data from database
 		if( $data = $this->db->fetchAssoc( "SELECT * FROM ".self::TABLE." WHERE grow_id = ?", array($this->getID())) ){
-			$this->setName( $data['name'] );
-			$this->setStart( $data['start'] );
-			$this->setMedium( $data['medium'] );
+			$this->initFromRowData( $data );
 			$this->initPlants();
 			return true;
 		}
 		return false;
 	}
 
+	/**
+	 * @param array $data
+	 */
+	public function initFromRowData(Array $data) {
+		$this->setName( $data['name'] );
+		$this->setStart( $data['start'] );
+		$this->setMedium( $data['medium'] );
+	}
+
+	/**
+	 *
+	 */
 	protected function initPlants(){
 		$this->initPlantsCollection();
 		$this->getPlants()->initByGrow( $this );

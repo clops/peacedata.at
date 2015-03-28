@@ -65,6 +65,12 @@ abstract class Generic {
 
 
 	/**
+	 *
+	 */
+	abstract public function initFromRowData(Array $data);
+
+
+	/**
 	 * @param $id
 	 */
 	public function setID($id){

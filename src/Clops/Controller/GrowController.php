@@ -5,6 +5,7 @@
 namespace Clops\Controller;
 
 use Clops\Domain\Grow;
+use Clops\Domain\Plant;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -60,5 +61,31 @@ class GrowController
 		return $app['twig']->render('grow/show.html.twig', array(
 			'grow' => $grow
 		));
+	}
+
+
+	/**
+	 * @param Request     $request
+	 * @param Application $app
+	 *
+	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
+	 */
+	public function updateAction(Request $request, Application $app, $id)
+	{
+		$grow = new Grow( $app, $id );
+		$postedNames = $request->get('name');
+
+		/**
+		 * @var Plant $plant
+		 */
+		foreach($grow->getPlants() as $plant){
+			if(isset($postedNames[$plant->getID()])){
+				$plant->setName( $postedNames[$plant->getID()] );
+			}
+
+			$plant->update();
+		}
+
+		return $app->redirect('/grow/'.$grow->getID().'/?confirm=1');
 	}
 }

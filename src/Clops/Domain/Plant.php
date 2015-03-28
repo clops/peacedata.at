@@ -13,6 +13,7 @@ class Plant extends Generic{
 
 	protected $grow;
 	protected $name;
+	protected $height;
 
 	/* DB Reference */
 	const TABLE = 'plant';
@@ -22,7 +23,21 @@ class Plant extends Generic{
 	 */
 	public function init($id){
 		//load data from database
+		if( $data = $this->db->fetchAssoc( "SELECT * FROM ".self::TABLE." WHERE plant_id = ?", array($this->getID())) ){
+			$this->initFromRowData( $data );
+			return true;
+		}
+		return false;
+	}
 
+
+	/**
+	 * @param array $data
+	 */
+	public function initFromRowData(Array $data) {
+		$this->setID( $data['plant_id'] );
+		$this->setName( $data['name'] );
+		$this->setHeight( $data['height'] );
 	}
 
 
@@ -58,11 +73,28 @@ class Plant extends Generic{
 	}
 
 
+	/**
+	 * @return int
+	 */
+	public function getHeight () {
+		return $this->height;
+	}
 
 
+	/**
+	 * @param mixed $height
+	 */
+	public function setHeight ($height) {
+		$this->height = (int)$height;
+	}
+
+
+	/**
+	 *
+	 */
 	public function create() {
 		//save grow
-		$this->app['db']->insert(self::TABLE, array(
+		$this->db->insert(self::TABLE, array(
 			'name'    => $this->getName(), //this is the primary key, sending the same commit over WILL result in an exception :)
 			'created' => $this->getCreated(),
 			'grow_id' => $this->getGrow()->getID()
@@ -72,7 +104,16 @@ class Plant extends Generic{
 	}
 
 
+	/**
+	 * @return int
+	 */
 	public function update() {
+		return $this->db->update(self::TABLE, array(
+													'name'    => $this->getName()
+												), array(
+													'plant_id' => $this->getID(),
+												    'grow_id'  => $this->getGrow()->getID()
+												));
 
 	}
 
